@@ -13,8 +13,8 @@ public:
 	//Release the window
 	bool release();
 	bool isRun();
-
-	//EVENTS
+	RECT getClientWindowRect();
+	void setHWND(HWND hwnd);
 	virtual void onCreate();
 	virtual void onUpdate();
 	virtual void onDestroy();
