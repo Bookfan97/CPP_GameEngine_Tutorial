@@ -25,6 +25,9 @@
     <Filter Include="GameEngine\GraphicsEngine\VertexShader">
       <UniqueIdentifier>{0ade675c-f071-4241-a292-2e16240ec37c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="GameEngine\GraphicsEngine\PixelShader">
+      <UniqueIdentifier>{f4d2b0ca-36a4-403b-9dce-f3c6bbc38aa1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -35,9 +38,6 @@
     </ClCompile>
     <ClCompile Include="window.cpp">
       <Filter>GameEngine\WindowingSystem</Filter>
-    </ClCompile>
-    <ClCompile Include="GraphicsEngine.cpp">
-      <Filter>GameEngine\GraphicsEngine</Filter>
     </ClCompile>
     <ClCompile Include="SwapChain.cpp">
       <Filter>GameEngine\GraphicsEngine\SwapChain</Filter>
@@ -50,6 +50,12 @@
     </ClCompile>
     <ClCompile Include="VertexShader.cpp">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
+    </ClCompile>
+    <ClCompile Include="PixelShader.cpp">
+      <Filter>GameEngine\GraphicsEngine\PixelShader</Filter>
+    </ClCompile>
+    <ClCompile Include="GraphicsEngine.cpp">
+      <Filter>GameEngine\GraphicsEngine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +80,15 @@
     <ClInclude Include="VertexShader.h">
       <Filter>GameEngine\GraphicsEngine\VertexShader</Filter>
     </ClInclude>
+    <ClInclude Include="PixelShader.h">
+      <Filter>GameEngine\GraphicsEngine\PixelShader</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <FxCompile Include="VertexShader.hlsl">
+      <Filter>App</Filter>
+    </FxCompile>
+    <FxCompile Include="PixelShader.hlsl">
       <Filter>App</Filter>
     </FxCompile>
   </ItemGroup>
