@@ -22,6 +22,7 @@ private:
 	VertexShader* m_vs;
 	PixelShader* m_ps;
 	ConstantBuffer* m_cb;
+	IndexBuffer* m_ib;
 	float m_old_delta;
 	float m_new_delta;
 	float m_delta_time;
