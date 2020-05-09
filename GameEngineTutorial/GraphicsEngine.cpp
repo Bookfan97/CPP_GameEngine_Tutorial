@@ -2,10 +2,10 @@
 #include "SwapChain.h"
 #include "DeviceContext.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "ConstantBuffer.h"
 #include "VertexShader.h"
 #include "PixelShader.h"
-#include "IndexBuffer.h"
 #include <d3dcompiler.h>
 
 GraphicsEngine::GraphicsEngine()
@@ -14,9 +14,18 @@ GraphicsEngine::GraphicsEngine()
 
 bool GraphicsEngine::init()
 {
-	D3D_DRIVER_TYPE driver_types[] = {D3D_DRIVER_TYPE_HARDWARE, D3D_DRIVER_TYPE_WARP, D3D_DRIVER_TYPE_REFERENCE};
+	D3D_DRIVER_TYPE driver_types[] =
+	{
+		D3D_DRIVER_TYPE_HARDWARE,
+		D3D_DRIVER_TYPE_WARP,
+		D3D_DRIVER_TYPE_REFERENCE
+	};
 	UINT num_driver_types = ARRAYSIZE(driver_types);
-	D3D_FEATURE_LEVEL feature_levels[] = {D3D_FEATURE_LEVEL_11_0};
+
+	D3D_FEATURE_LEVEL feature_levels[] =
+	{
+		D3D_FEATURE_LEVEL_11_0
+	};
 	UINT num_feature_levels = ARRAYSIZE(feature_levels);
 	HRESULT res = 0;
 	for (UINT driver_type_index = 0; driver_type_index < num_driver_types;)
@@ -68,14 +77,14 @@ DeviceContext* GraphicsEngine::getImmediateDeviceContext()
 	return this->m_imm_device_context;
 }
 
-IndexBuffer* GraphicsEngine::createIndexBuffer()
-{
-	return new IndexBuffer();
-}
-
 VertexBuffer* GraphicsEngine::createVertexBuffer()
 {
 	return new VertexBuffer();
+}
+
+IndexBuffer* GraphicsEngine::createIndexBuffer()
+{
+	return new IndexBuffer();
 }
 
 ConstantBuffer* GraphicsEngine::createConstantBuffer()

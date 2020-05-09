@@ -3,10 +3,10 @@
 
 class SwapChain;
 class VertexBuffer;
+class IndexBuffer;
 class ConstantBuffer;
 class VertexShader;
 class PixelShader;
-class IndexBuffer;
 class DeviceContext
 {
 public:
@@ -27,5 +27,4 @@ public:
 private:
 	ID3D11DeviceContext* m_device_context;
 	friend class ConstantBuffer;
-	friend class IndexBuffer;
 };

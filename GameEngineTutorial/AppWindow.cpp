@@ -2,7 +2,6 @@
 #include <Windows.h>
 #include "Vector3D.h"
 #include "Matrix4x4.h"
-#include "IndexBuffer.h"
 #include "InputSystem.h"
 struct vertex
 {
@@ -11,7 +10,7 @@ struct vertex
 	Vector3D color1;
 };
 
-_declspec(align(16))
+__declspec(align(16))
 struct constant
 {
 	Matrix4x4 m_world;
@@ -34,11 +33,8 @@ void AppWindow::updateQuadPosition()
 		m_delta_pos = 0;
 	}
 	Matrix4x4 temp;
-	m_delta_scale += m_delta_time / 0.15f;
-	//cc.m_world.setScale(Vector3D::lerp(Vector3D(0.5, 0.5, 0), Vector3D(1.0f, 1.0f, 0), (sin(m_delta_scale) + 1.0f) / 2.0f));
-	//temp.setTranslation(Vector3D::lerp(Vector3D(-1.5f, -1.5f, 0), Vector3D(1.5f, 1.5f, 0), m_delta_pos));
-	//cc.m_world *= temp;
-	cc.m_world.setScale(Vector3D(1, 1, 1));
+	m_delta_scale += m_delta_time / 0.55f;
+	cc.m_world.setScale(Vector3D(m_scale_cube, m_scale_cube, m_scale_cube));
 	temp.setIdentity();
 	temp.setRotationZ(0.0f);
 	cc.m_world *= temp;
@@ -51,8 +47,8 @@ void AppWindow::updateQuadPosition()
 	cc.m_view.setIdentity();
 	cc.m_proj.setOrthoLH
 	(
-		(this->getClientWindowRect().right - this->getClientWindowRect().left) / 400.0f,
-		(this->getClientWindowRect().bottom - this->getClientWindowRect().top) / 400.0f,
+		(this->getClientWindowRect().right - this->getClientWindowRect().left) / 300.0f,
+		(this->getClientWindowRect().bottom - this->getClientWindowRect().top) / 300.0f,
 		-4.0f,
 		4.0f
 	);
@@ -85,7 +81,7 @@ void AppWindow::onCreate()
 	};
 	m_vb = GraphicsEngine::get()->createVertexBuffer();
 	UINT size_list = ARRAYSIZE(vertex_list);
-	unsigned int index_list[] = 
+	unsigned int index_list[] =
 	{
 		0,1,2,
 		2,3,0,
@@ -121,6 +117,7 @@ void AppWindow::onCreate()
 void AppWindow::onUpdate()
 {
 	Window::onUpdate();
+	InputSystem::get()->update();
 	GraphicsEngine::get()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain, 0, 0.3f, 0.4f, 1);
 	RECT rc = this->getClientWindowRect();
 	GraphicsEngine::get()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
@@ -150,6 +147,16 @@ void AppWindow::onDestroy()
 	GraphicsEngine::get()->release();
 }
 
+void AppWindow::onFocus()
+{
+	InputSystem::get()->addListener(this);
+}
+
+void AppWindow::onKillFocus()
+{
+	InputSystem::get()->removeListener(this);
+}
+
 void AppWindow::onKeyDown(int key)
 {
 	if (key == 'W')
@@ -172,5 +179,31 @@ void AppWindow::onKeyDown(int key)
 
 void AppWindow::onKeyUp(int key)
 {
+
 }
 
+void AppWindow::onMouseMove(const Point& delta_mouse_pos)
+{
+	m_rot_x -= delta_mouse_pos.m_y * m_delta_time;
+	m_rot_y -= delta_mouse_pos.m_x * m_delta_time;
+}
+
+void AppWindow::onLeftMouseDown(const Point& mouse_pos)
+{
+	m_scale_cube = 0.5f;
+}
+
+void AppWindow::onLeftMouseUp(const Point& mouse_pos)
+{
+	m_scale_cube = 1.0f;
+}
+
+void AppWindow::onRightMouseDown(const Point& mouse_pos)
+{
+	m_scale_cube = 2.0f;
+}
+
+void AppWindow::onRightMouseUp(const Point& mouse_pos)
+{
+	m_scale_cube = 1.0f;
+}
