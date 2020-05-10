@@ -8,7 +8,7 @@ public:
 	}
 	~InputListener()
 	{
-	}
+	} 
 	virtual void onKeyDown(int key) = 0;
 	virtual void onKeyUp(int key) = 0;
 	virtual void onMouseMove(const Point& mouse_pos) = 0;

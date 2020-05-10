@@ -18,14 +18,12 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT msg, WPARAM wparam, LPARAM lparam)
 	}
 	case WM_SETFOCUS:
 	{
-		// Event fired when the window get focus
 		Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		window->onFocus();
 		break;
 	}
 	case WM_KILLFOCUS:
 	{
-		// Event fired when the window lost focus
 		Window* window = (Window*)GetWindowLongPtr(hwnd, GWLP_USERDATA);
 		window->onKillFocus();
 		break;

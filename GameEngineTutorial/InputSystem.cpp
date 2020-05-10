@@ -51,9 +51,7 @@ void InputSystem::update()
 							(*it)->onRightMouseDown(Point(current_mouse_pos.x, current_mouse_pos.y));
 					}
 					else
-					{
 						(*it)->onKeyDown(i);
-					}
 					++it;
 				}
 			}
