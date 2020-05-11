@@ -3,12 +3,14 @@
 #include "Vector3D.h"
 #include "Matrix4x4.h"
 #include "InputSystem.h"
+
 struct vertex
 {
 	Vector3D position;
 	Vector3D color;
 	Vector3D color1;
 };
+
 
 __declspec(align(16))
 struct constant
@@ -18,6 +20,7 @@ struct constant
 	Matrix4x4 m_proj;
 	unsigned int m_time;
 };
+
 
 AppWindow::AppWindow()
 {
@@ -65,7 +68,6 @@ void AppWindow::onCreate()
 	Window::onCreate();
 	InputSystem::get()->addListener(this);
 	InputSystem::get()->showCursor(false);
-	GraphicsEngine::get()->init();
 	RECT rc = this->getClientWindowRect();
 	m_swap_chain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 	m_world_cam.setTranslation(Vector3D(0, 0, -2));
@@ -79,6 +81,7 @@ void AppWindow::onCreate()
 		{Vector3D(0.5f, 0.5f, 0.5f), Vector3D(0, 1, 1), Vector3D(0, 0.2f, 0.2f)},
 		{Vector3D(-0.5f, 0.5f, 0.5f), Vector3D(0, 1, 1),  Vector3D(0, 0.2f, 0.2f)},
 		{Vector3D(-0.5f, -0.5f, 0.5f), Vector3D(0, 1, 0), Vector3D(0, 0.2f, 0)}
+
 	};
 	UINT size_list = ARRAYSIZE(vertex_list);
 	unsigned int index_list[] =
@@ -136,7 +139,6 @@ void AppWindow::onUpdate()
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
-	GraphicsEngine::get()->release();
 }
 
 void AppWindow::onFocus()

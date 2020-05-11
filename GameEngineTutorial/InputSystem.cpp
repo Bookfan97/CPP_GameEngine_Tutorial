@@ -1,6 +1,6 @@
 #include "InputSystem.h"
 #include <Windows.h>
-
+InputSystem* InputSystem::m_system = nullptr;
 
 InputSystem::InputSystem()
 {
@@ -9,6 +9,7 @@ InputSystem::InputSystem()
 
 InputSystem::~InputSystem()
 {
+	InputSystem::m_system = nullptr;
 }
 
 void InputSystem::update()
@@ -30,7 +31,6 @@ void InputSystem::update()
 		}
 	}
 	m_old_mouse_pos = Point(current_mouse_pos.x, current_mouse_pos.y);
-
 	if (::GetKeyboardState(m_keys_state))
 	{
 		for (unsigned int i = 0; i < 256; i++)
@@ -51,7 +51,9 @@ void InputSystem::update()
 							(*it)->onRightMouseDown(Point(current_mouse_pos.x, current_mouse_pos.y));
 					}
 					else
+					{
 						(*it)->onKeyDown(i);
+					}
 					++it;
 				}
 			}
@@ -105,6 +107,17 @@ void InputSystem::showCursor(bool show)
 
 InputSystem* InputSystem::get()
 {
-	static InputSystem system;
-	return &system;
+	return m_system;
+}
+
+void InputSystem::create()
+{
+	if (InputSystem::m_system) throw std::exception("InputSystem already created");
+	InputSystem::m_system = new InputSystem();
+}
+
+void InputSystem::release()
+{
+	if (!InputSystem::m_system) return;
+	delete InputSystem::m_system;
 }
