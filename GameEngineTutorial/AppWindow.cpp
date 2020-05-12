@@ -1,14 +1,14 @@
 #include "AppWindow.h"
 #include <Windows.h>
 #include "Vector3D.h"
+#include "Vector2D.h"
 #include "Matrix4x4.h"
 #include "InputSystem.h"
 
 struct vertex
 {
 	Vector3D position;
-	Vector3D color;
-	Vector3D color1;
+	Vector2D texcoord;
 };
 
 
@@ -68,20 +68,56 @@ void AppWindow::onCreate()
 	Window::onCreate();
 	InputSystem::get()->addListener(this);
 	InputSystem::get()->showCursor(false);
+	m_wood_texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\wood.jpg");
 	RECT rc = this->getClientWindowRect();
 	m_swap_chain = GraphicsEngine::get()->getRenderSystem()->createSwapChain(this->m_hwnd, rc.right - rc.left, rc.bottom - rc.top);
 	m_world_cam.setTranslation(Vector3D(0, 0, -2));
+	Vector3D position_list[] =
+	{
+		{ Vector3D(-0.5f,-0.5f,-0.5f)},
+		{ Vector3D(-0.5f,0.5f,-0.5f) },
+		{ Vector3D(0.5f,0.5f,-0.5f) },
+		{ Vector3D(0.5f,-0.5f,-0.5f)},
+		{ Vector3D(0.5f,-0.5f,0.5f) },
+		{ Vector3D(0.5f,0.5f,0.5f) },
+		{ Vector3D(-0.5f,0.5f,0.5f)},
+		{ Vector3D(-0.5f,-0.5f,0.5f) }
+	};
+
+	Vector2D texcoord_list[] =
+	{
+		{ Vector2D(0.0f,0.0f) },
+		{ Vector2D(0.0f,1.0f) },
+		{ Vector2D(1.0f,0.0f) },
+		{ Vector2D(1.0f,1.0f) }
+	};
+
 	vertex vertex_list[] =
 	{
-		{Vector3D(-0.5f, -0.5f, -0.5f), Vector3D(1, 0, 0),  Vector3D(0.2f, 0, 0)},
-		{Vector3D(-0.5f, 0.5f, -0.5f), Vector3D(1, 1, 0), Vector3D(0.2f, 0.2f, 0)},
-		{Vector3D(0.5f, 0.5f, -0.5f), Vector3D(1, 1, 0),  Vector3D(0.2f, 0.2f, 0)},
-		{Vector3D(0.5f, -0.5f, -0.5f), Vector3D(1, 0, 0), Vector3D(0.2f, 0, 0)},
-		{Vector3D(0.5f,-0.5f, 0.5f), Vector3D(0, 1, 0), Vector3D(0, 0.2f, 0)},
-		{Vector3D(0.5f, 0.5f, 0.5f), Vector3D(0, 1, 1), Vector3D(0, 0.2f, 0.2f)},
-		{Vector3D(-0.5f, 0.5f, 0.5f), Vector3D(0, 1, 1),  Vector3D(0, 0.2f, 0.2f)},
-		{Vector3D(-0.5f, -0.5f, 0.5f), Vector3D(0, 1, 0), Vector3D(0, 0.2f, 0)}
-
+		{ position_list[0],texcoord_list[1] },
+		{ position_list[1],texcoord_list[0] },
+		{ position_list[2],texcoord_list[2] },
+		{ position_list[3],texcoord_list[3] },
+		{ position_list[4],texcoord_list[1] },
+		{ position_list[5],texcoord_list[0] },
+		{ position_list[6],texcoord_list[2] },
+		{ position_list[7],texcoord_list[3] },
+		{ position_list[1],texcoord_list[1] },
+		{ position_list[6],texcoord_list[0] },
+		{ position_list[5],texcoord_list[2] },
+		{ position_list[2],texcoord_list[3] },
+		{ position_list[7],texcoord_list[1] },
+		{ position_list[0],texcoord_list[0] },
+		{ position_list[3],texcoord_list[2] },
+		{ position_list[4],texcoord_list[3] },
+		{ position_list[3],texcoord_list[1] },
+		{ position_list[2],texcoord_list[0] },
+		{ position_list[5],texcoord_list[2] },
+		{ position_list[4],texcoord_list[3] },
+		{ position_list[7],texcoord_list[1] },
+		{ position_list[6],texcoord_list[0] },
+		{ position_list[1],texcoord_list[2] },
+		{ position_list[0],texcoord_list[3] }
 	};
 	UINT size_list = ARRAYSIZE(vertex_list);
 	unsigned int index_list[] =
@@ -90,14 +126,14 @@ void AppWindow::onCreate()
 		2,3,0,
 		4,5,6,
 		6,7,4,
-		1,6,5,
-		5,2,1,
-		7,0,3,
-		3,4,7,
-		3,2,5,
-		5,4,3,
-		7,6,1,
-		1,0,7
+		8,9,10,
+		10,11,8,
+		12,13,14,
+		14,15,12,
+		16,17,18,
+		18,19,16,
+		20,21,22,
+		22,23,20
 	};
 	UINT size_index_list = ARRAYSIZE(index_list);
 	m_ib = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(index_list, size_index_list);
@@ -126,6 +162,7 @@ void AppWindow::onUpdate()
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_vs, m_cb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setConstantBuffer(m_ps, m_cb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexShader(m_vs);
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setTexture(m_ps, m_wood_texture);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setPixelShader(m_ps);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setVertexBuffer(m_vb);
 	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setIndexBuffer(m_ib);

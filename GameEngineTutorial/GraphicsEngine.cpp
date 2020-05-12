@@ -14,6 +14,14 @@ GraphicsEngine::GraphicsEngine()
 	{
 		throw std::exception("Graphics Engine not created successfully"); 
 	}
+	try
+	{
+		m_texture_manager = new TextureManager();
+	}
+	catch (...)
+	{
+		throw std::exception("TextureManager not created successfully");
+	}
 }
 
 RenderSystem* GraphicsEngine::getRenderSystem()
@@ -21,9 +29,15 @@ RenderSystem* GraphicsEngine::getRenderSystem()
 	return m_render_system;
 }
 
+TextureManager* GraphicsEngine::getTextureManager()
+{
+	return m_texture_manager;
+}
+
 GraphicsEngine::~GraphicsEngine()
 {
 	GraphicsEngine::m_engine = nullptr;
+	delete m_texture_manager;
 	delete m_render_system;
 }
 
