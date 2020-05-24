@@ -52,6 +52,9 @@
     <Filter Include="GameEngine\GraphicsEngine\ResourceManager\MeshManager">
       <UniqueIdentifier>{72aae30e-bf76-4e46-94d0-cf17162cf8a8}</UniqueIdentifier>
     </Filter>
+    <Filter Include="App\Shaders">
+      <UniqueIdentifier>{b6985640-5562-4401-83fa-04596dccba35}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="main.cpp">
@@ -193,13 +196,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <FxCompile Include="VertexShader.hlsl">
-      <Filter>App</Filter>
-    </FxCompile>
     <FxCompile Include="PixelShader.hlsl">
       <Filter>App</Filter>
     </FxCompile>
+    <FxCompile Include="SkyBoxShader.hlsl">
+      <Filter>App</Filter>
+    </FxCompile>
     <FxCompile Include="VertexMeshLayoutShader.hlsl">
+      <Filter>App</Filter>
+    </FxCompile>
+    <FxCompile Include="VertexShader.hlsl">
       <Filter>App</Filter>
     </FxCompile>
   </ItemGroup>
