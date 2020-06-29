@@ -16,6 +16,7 @@ class AppWindow : public Window, public InputListener
 public:
 	AppWindow();
 	void update();
+	void render();
 	void updateModel();
 	void updateCamera();
 	void updateSkyBox();
@@ -25,6 +26,7 @@ public:
 	virtual void onDestroy() override;
 	virtual void onFocus() override;
 	virtual void onKillFocus() override;
+	virtual void onSize() override;
 	virtual void onKeyDown(int key) override;
 	virtual void onKeyUp(int key) override;
 	virtual void onMouseMove(const Point& mouse_pos) override;
@@ -57,6 +59,8 @@ private:
 	float m_forward = 0.0f;
 	float m_rightward = 0.0f;
 	bool cull = true;
+	bool m_play_state = false;
+	bool m_fullscreen_state = false;
 	Matrix4x4 m_world_cam;
 	Matrix4x4 m_view_cam;
 	Matrix4x4 m_proj_cam;

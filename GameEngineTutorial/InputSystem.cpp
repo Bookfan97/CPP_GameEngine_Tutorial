@@ -6,7 +6,6 @@ InputSystem::InputSystem()
 {
 }
 
-
 InputSystem::~InputSystem()
 {
 	InputSystem::m_system = nullptr;

@@ -9,9 +9,9 @@ int main()
 		GraphicsEngine::create();
 		InputSystem::create();
 	}
-	catch (...) 
+	catch (...)
 	{
-		return -1; 
+		return -1;
 	}
 
 	{

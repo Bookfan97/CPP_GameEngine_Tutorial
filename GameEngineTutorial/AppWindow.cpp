@@ -11,7 +11,6 @@ struct vertex
 	Vector2D texcoord;
 };
 
-
 __declspec(align(16))
 struct constant
 {
@@ -22,7 +21,6 @@ struct constant
 	Vector4D m_camera_position;
 };
 
-
 AppWindow::AppWindow()
 {
 }
@@ -32,6 +30,22 @@ void AppWindow::update()
 	updateCamera();
 	updateModel();
 	updateSkyBox();
+}
+
+void AppWindow::render()
+{
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain, 0, 0.3f, 0.4f, 1);
+	RECT rc = this->getClientWindowRect();
+	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
+	update();
+	GraphicsEngine::get()->getRenderSystem()->setRasterizerState(false);
+	drawMesh(m_mesh, m_vs, m_ps, m_cb, m_wood_texture);
+	GraphicsEngine::get()->getRenderSystem()->setRasterizerState(true);
+	drawMesh(m_sky_mesh, m_vs, m_sky_ps, m_sky_cb, m_sky_texture);
+	m_swap_chain->present(true);
+	m_old_delta = m_new_delta;
+	m_new_delta = ::GetTickCount();
+	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0;
 }
 
 void AppWindow::updateModel()
@@ -101,6 +115,7 @@ void AppWindow::onCreate()
 {
 	Window::onCreate();
 	InputSystem::get()->addListener(this);
+	m_play_state = true;
 	InputSystem::get()->showCursor(false);
 	m_wood_texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\brick.png");
 	m_sky_texture = GraphicsEngine::get()->getTextureManager()->createTextureFromFile(L"Assets\\Textures\\sky.jpg");
@@ -129,23 +144,13 @@ void AppWindow::onUpdate()
 {
 	Window::onUpdate();
 	InputSystem::get()->update();
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->clearRenderTargetColor(this->m_swap_chain, 0, 0.3f, 0.4f, 1);
-	RECT rc = this->getClientWindowRect();
-	GraphicsEngine::get()->getRenderSystem()->getImmediateDeviceContext()->setViewportSize(rc.right - rc.left, rc.bottom - rc.top);
-	update();
-	GraphicsEngine::get()->getRenderSystem()->setRasterizerState(false);
-	drawMesh(m_mesh, m_vs, m_ps, m_cb, m_wood_texture);
-	GraphicsEngine::get()->getRenderSystem()->setRasterizerState(true);
-	drawMesh(m_sky_mesh, m_vs, m_sky_ps, m_sky_cb, m_sky_texture);
-	m_swap_chain->present(true);
-	m_old_delta = m_new_delta;
-	m_new_delta = ::GetTickCount();
-	m_delta_time = (m_old_delta) ? ((m_new_delta - m_old_delta) / 1000.0f) : 0;
+	this->render();
 }
 
 void AppWindow::onDestroy()
 {
 	Window::onDestroy();
+	m_swap_chain->setFullscreen(false, 1, 1);
 }
 
 void AppWindow::onFocus()
@@ -156,6 +161,13 @@ void AppWindow::onFocus()
 void AppWindow::onKillFocus()
 {
 	InputSystem::get()->removeListener(this);
+}
+
+void AppWindow::onSize()
+{
+	RECT rc = this->getClientWindowRect();
+	m_swap_chain->resize(rc.right, rc.bottom);
+	this->render();
 }
 
 void AppWindow::onKeyDown(int key)
@@ -182,10 +194,28 @@ void AppWindow::onKeyUp(int key)
 {
 	m_forward = 0.0f;
 	m_rightward = 0.0f;
+	if (key == 'G')
+	{
+		m_play_state = (m_play_state) ? false : true;
+		InputSystem::get()->showCursor(!m_play_state);
+	}
+	else if (key == 'F')
+	{
+		m_fullscreen_state = (m_fullscreen_state) ? false : true;
+		RECT size_screen = this->getSizeScreen();
+		//if (m_fullscreen_state)
+		//{
+		m_swap_chain->setFullscreen(m_fullscreen_state, size_screen.right, size_screen.bottom);
+		//}
+	}
 }
 
 void AppWindow::onMouseMove(const Point& mouse_pos)
 {
+	if (!m_play_state)
+	{
+		return;
+	}
 	int width = (this->getClientWindowRect().right - this->getClientWindowRect().left);
 	int height = (this->getClientWindowRect().bottom - this->getClientWindowRect().top);
 	m_rot_x += (mouse_pos.m_y - (height / 2.0f)) * m_delta_time * 0.1f;

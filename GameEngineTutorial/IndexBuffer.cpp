@@ -24,7 +24,6 @@ UINT IndexBuffer::getSizeIndexList()
 	return this->m_size_list;
 }
 
-
 IndexBuffer::~IndexBuffer()
 {
 	m_buffer->Release();

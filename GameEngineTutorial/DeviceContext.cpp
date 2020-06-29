@@ -91,7 +91,6 @@ void DeviceContext::setConstantBuffer(const PixelShaderPtr& pixel_shader, const 
 	m_device_context->PSSetConstantBuffers(0, 1, &buffer->m_buffer);
 }
 
-
 DeviceContext::~DeviceContext()
 {
 	m_device_context->Release();

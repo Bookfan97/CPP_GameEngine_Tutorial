@@ -3,7 +3,6 @@
 #include "VertexBuffer.h"
 #include "IndexBuffer.h"
 
-
 class Mesh : public Resource
 {
 public:

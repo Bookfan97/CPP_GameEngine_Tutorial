@@ -1,11 +1,9 @@
 #include "TextureManager.h"
 #include "Texture.h"
 
-
 TextureManager::TextureManager() : ResourceManager()
 {
 }
-
 
 TextureManager::~TextureManager()
 {

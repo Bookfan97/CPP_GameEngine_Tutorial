@@ -10,25 +10,25 @@ GraphicsEngine::GraphicsEngine()
 	{
 		m_render_system = new RenderSystem();
 	}
-	catch (...) 
+	catch (...)
 	{
-		throw std::exception("RenderSystem not created successfully"); 
+		throw std::exception("RenderSystem not created successfully");
 	}
 	try
 	{
 		m_texture_manager = new TextureManager();
 	}
-	catch (...) 
+	catch (...)
 	{
-		throw std::exception("TextureManager not created successfully"); 
+		throw std::exception("TextureManager not created successfully");
 	}
 	try
 	{
 		m_mesh_manager = new MeshManager();
 	}
-	catch (...) 
-	{ 
-		throw std::exception("MeshManager not created successfully"); 
+	catch (...)
+	{
+		throw std::exception("MeshManager not created successfully");
 	}
 	void* shader_byte_code = nullptr;
 	size_t size_shader = 0;

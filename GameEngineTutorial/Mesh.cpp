@@ -55,7 +55,6 @@ Mesh::Mesh(const wchar_t* full_path) : Resource(full_path)
 	m_index_buffer = GraphicsEngine::get()->getRenderSystem()->createIndexBuffer(&list_indices[0], (UINT)list_indices.size());
 }
 
-
 Mesh::~Mesh()
 {
 }
