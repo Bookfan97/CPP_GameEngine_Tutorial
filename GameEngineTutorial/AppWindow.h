@@ -34,7 +34,7 @@ public:
 	virtual void onLeftMouseUp(const Point& mouse_pos) override;
 	virtual void onRightMouseDown(const Point& mouse_pos) override;
 	virtual void onRightMouseUp(const Point& mouse_pos) override;
-	void drawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr& tex);
+	void drawMesh(const MeshPtr& mesh, const VertexShaderPtr& vs, const PixelShaderPtr& ps, const ConstantBufferPtr& cb, const TexturePtr* list_tex, unsigned int num_textures);
 private:
 	SwapChainPtr m_swap_chain;
 	VertexShaderPtr m_vs;
@@ -42,7 +42,10 @@ private:
 	PixelShaderPtr m_sky_ps;
 	ConstantBufferPtr m_cb;
 	ConstantBufferPtr m_sky_cb;
-	TexturePtr m_wood_texture;
+	TexturePtr m_earth_color_texture;
+	TexturePtr m_earth_specular_texture;
+	TexturePtr m_earth_night_texture;
+	TexturePtr m_clouds_texture;
 	TexturePtr m_sky_texture;
 	MeshPtr m_mesh;
 	MeshPtr m_sky_mesh;
@@ -64,4 +67,5 @@ private:
 	Matrix4x4 m_world_cam;
 	Matrix4x4 m_view_cam;
 	Matrix4x4 m_proj_cam;
+	float m_time = 0.0f;
 };

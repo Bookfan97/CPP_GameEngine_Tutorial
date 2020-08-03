@@ -13,7 +13,6 @@ struct VS_OUTPUT
 	float3 direction_to_camera: TEXCOORD1;
 };
 
-
 cbuffer constant: register(b0)
 {
 	row_major float4x4 m_world;
@@ -22,8 +21,6 @@ cbuffer constant: register(b0)
 	float4 m_light_direction;
 	float4 m_camera_position;
 };
-
-
 
 VS_OUTPUT vsmain(VS_INPUT input)
 {
